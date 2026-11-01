@@ -42,6 +42,14 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     logger.info("Starting up %s (version: %s)", settings.APP_NAME, settings.APP_VERSION)
     logger.info("Environment: %s | Debug: %s", settings.ENVIRONMENT, settings.DEBUG)
     logger.info("Configured CORS Origins: %s", settings.CORS_ORIGINS)
+    # Ensure database tables exist (essential for cloud deployments with fresh SQLite or Postgres)
+    try:
+        from app.models import __all__  # Ensure all models are registered
+        from app.core.database import Base, engine
+        Base.metadata.create_all(bind=engine)
+        logger.info("Database schema verified and initialized.")
+    except Exception as e:
+        logger.error("Failed to initialize database tables: %s", e)
     yield
     logger.info("Shutting down %s", settings.APP_NAME)
 
