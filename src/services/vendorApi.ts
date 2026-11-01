@@ -20,10 +20,29 @@ import {
   VendorUpdate,
 } from '../types/vendor';
 
+const CLOUD_BACKEND_URL = 'https://prompt-wars-c5-api.onrender.com';
+
 const getApiBaseUrl = (): string => {
   const envUrl = import.meta.env.VITE_API_BASE_URL;
-  if (envUrl && typeof envUrl === 'string') {
-    return envUrl.replace(/\/+$/, '');
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim()) {
+    const trimmed = envUrl.trim().replace(/\/+$/, '');
+    if (
+      typeof window !== 'undefined' &&
+      window.location.hostname !== 'localhost' &&
+      window.location.hostname !== '127.0.0.1'
+    ) {
+      if (trimmed.includes('localhost') || trimmed.includes('127.0.0.1')) {
+        return CLOUD_BACKEND_URL;
+      }
+    }
+    return trimmed;
+  }
+  if (
+    typeof window !== 'undefined' &&
+    window.location.hostname !== 'localhost' &&
+    window.location.hostname !== '127.0.0.1'
+  ) {
+    return CLOUD_BACKEND_URL;
   }
   return '';
 };
