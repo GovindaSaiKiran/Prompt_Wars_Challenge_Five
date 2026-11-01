@@ -11,7 +11,7 @@ Adheres strictly to the Nominatim Usage Policy:
 
 from datetime import datetime, timezone
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import httpx
 
@@ -61,7 +61,7 @@ class NominatimClient:
             "Accept": "application/json",
         }
 
-    def _extract_locality(self, address: Dict[str, Any]) -> Tuple_Locality:
+    def _extract_locality(self, address: Dict[str, Any]) -> Tuple[Optional[str], Optional[str], Optional[str], Optional[str], Optional[str]]:
         """Extracts city, locality, state, country, postal code from address dict."""
         city = (
             address.get("city")
