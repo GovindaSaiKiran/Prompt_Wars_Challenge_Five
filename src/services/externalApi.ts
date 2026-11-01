@@ -34,14 +34,61 @@ export class ExternalApiError extends Error {
 }
 
 /**
+ * Robust fetch wrapper that handles localhost / 127.0.0.1 IPv6 fallbacks on Windows
+ * and relative path fallbacks via Vite proxy.
+ */
+async function robustExternalFetch(
+  endpointPath: string,
+  options: RequestInit = {}
+): Promise<Response> {
+  const baseUrl = getApiBaseUrl();
+  const primaryUrl = `${baseUrl}${endpointPath}`;
+
+  try {
+    return await fetch(primaryUrl, options);
+  } catch (err: any) {
+    if (baseUrl.includes('localhost:8000')) {
+      const ipv4Url = primaryUrl.replace('localhost:8000', '127.0.0.1:8000');
+      try {
+        return await fetch(ipv4Url, options);
+      } catch {
+        try {
+          return await fetch(endpointPath, options);
+        } catch {
+          throw new ExternalApiError(
+            'Backend server is unavailable. Ensure your FastAPI server is running or check your connection.',
+            undefined,
+            err
+          );
+        }
+      }
+    } else if (baseUrl) {
+      try {
+        return await fetch(endpointPath, options);
+      } catch {
+        throw new ExternalApiError(
+          'Backend server is unavailable. Ensure your FastAPI server is running or check your connection.',
+          undefined,
+          err
+        );
+      }
+    }
+    throw new ExternalApiError(
+      'Backend server is unavailable. Ensure your FastAPI server is running or check your connection.',
+      undefined,
+      err
+    );
+  }
+}
+
+/**
  * Fetch external data provider health and cache statistics.
  */
 export async function fetchExternalStatus(signal?: AbortSignal): Promise<ExternalStatusResponse> {
-  const baseUrl = getApiBaseUrl();
-  const url = `${baseUrl}/api/v1/external/status`;
+  const endpoint = `/api/v1/external/status`;
 
   try {
-    const res = await fetch(url, {
+    const res = await robustExternalFetch(endpoint, {
       method: 'GET',
       headers: { Accept: 'application/json' },
       signal,
@@ -52,6 +99,7 @@ export async function fetchExternalStatus(signal?: AbortSignal): Promise<Externa
     return (await res.json()) as ExternalStatusResponse;
   } catch (err: any) {
     if (err.name === 'AbortError') throw err;
+    if (err instanceof ExternalApiError) throw err;
     throw new ExternalApiError(err.message || 'Network error fetching external provider status');
   }
 }
@@ -65,7 +113,6 @@ export async function forwardGeocode(
   countryCode: string = 'in',
   signal?: AbortSignal
 ): Promise<ForwardGeocodeResponse> {
-  const baseUrl = getApiBaseUrl();
   const params = new URLSearchParams({
     q: query,
     limit: String(limit),
@@ -73,10 +120,10 @@ export async function forwardGeocode(
   if (countryCode) {
     params.set('country_code', countryCode);
   }
-  const url = `${baseUrl}/api/v1/external/geocode?${params.toString()}`;
+  const endpoint = `/api/v1/external/geocode?${params.toString()}`;
 
   try {
-    const res = await fetch(url, {
+    const res = await robustExternalFetch(endpoint, {
       method: 'GET',
       headers: { Accept: 'application/json' },
       signal,
@@ -87,6 +134,7 @@ export async function forwardGeocode(
     return (await res.json()) as ForwardGeocodeResponse;
   } catch (err: any) {
     if (err.name === 'AbortError') throw err;
+    if (err instanceof ExternalApiError) throw err;
     throw new ExternalApiError(err.message || 'Network error performing geocoding lookup');
   }
 }
@@ -99,15 +147,14 @@ export async function reverseGeocode(
   lon: number,
   signal?: AbortSignal
 ): Promise<ReverseGeocodeResponse> {
-  const baseUrl = getApiBaseUrl();
   const params = new URLSearchParams({
     lat: String(lat),
     lon: String(lon),
   });
-  const url = `${baseUrl}/api/v1/external/reverse-geocode?${params.toString()}`;
+  const endpoint = `/api/v1/external/reverse-geocode?${params.toString()}`;
 
   try {
-    const res = await fetch(url, {
+    const res = await robustExternalFetch(endpoint, {
       method: 'GET',
       headers: { Accept: 'application/json' },
       signal,
@@ -118,6 +165,7 @@ export async function reverseGeocode(
     return (await res.json()) as ReverseGeocodeResponse;
   } catch (err: any) {
     if (err.name === 'AbortError') throw err;
+    if (err instanceof ExternalApiError) throw err;
     throw new ExternalApiError(err.message || 'Network error performing reverse geocoding');
   }
 }
@@ -132,7 +180,6 @@ export async function fetchWeather(
   locationName?: string,
   signal?: AbortSignal
 ): Promise<WeatherResponse> {
-  const baseUrl = getApiBaseUrl();
   const params = new URLSearchParams({
     lat: String(lat),
     lon: String(lon),
@@ -140,10 +187,10 @@ export async function fetchWeather(
   if (date) params.set('date', date);
   if (locationName) params.set('location_name', locationName);
 
-  const url = `${baseUrl}/api/v1/external/weather?${params.toString()}`;
+  const endpoint = `/api/v1/external/weather?${params.toString()}`;
 
   try {
-    const res = await fetch(url, {
+    const res = await robustExternalFetch(endpoint, {
       method: 'GET',
       headers: { Accept: 'application/json' },
       signal,
@@ -154,6 +201,7 @@ export async function fetchWeather(
     return (await res.json()) as WeatherResponse;
   } catch (err: any) {
     if (err.name === 'AbortError') throw err;
+    if (err instanceof ExternalApiError) throw err;
     throw new ExternalApiError(err.message || 'Network error fetching weather intelligence');
   }
 }
@@ -169,7 +217,6 @@ export async function fetchNearbyPlaces(
   maxResults: number = 30,
   signal?: AbortSignal
 ): Promise<PlacesResponse> {
-  const baseUrl = getApiBaseUrl();
   const params = new URLSearchParams({
     lat: String(lat),
     lon: String(lon),
@@ -180,10 +227,10 @@ export async function fetchNearbyPlaces(
     params.set('category', category);
   }
 
-  const url = `${baseUrl}/api/v1/external/places?${params.toString()}`;
+  const endpoint = `/api/v1/external/places?${params.toString()}`;
 
   try {
-    const res = await fetch(url, {
+    const res = await robustExternalFetch(endpoint, {
       method: 'GET',
       headers: { Accept: 'application/json' },
       signal,
@@ -194,6 +241,7 @@ export async function fetchNearbyPlaces(
     return (await res.json()) as PlacesResponse;
   } catch (err: any) {
     if (err.name === 'AbortError') throw err;
+    if (err instanceof ExternalApiError) throw err;
     throw new ExternalApiError(err.message || 'Network error fetching nearby places');
   }
 }
