@@ -390,10 +390,11 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
 
           <button
             onClick={handleResetChat}
-            className="p-1.5 text-black bg-white hover:bg-red-50 border-2 border-black rounded-lg shadow-[1.5px_1.5px_0px_0px_#000] transition-all"
+            aria-label="Start new event consultation and clear chat"
+            className="p-1.5 text-black bg-white hover:bg-red-50 border-2 border-black rounded-lg shadow-[1.5px_1.5px_0px_0px_#000] transition-all focus-visible:ring-2 focus-visible:ring-black"
             title="Start new event consultation"
           >
-            <RotateCcw className="w-3.5 h-3.5 stroke-[2.5]" />
+            <RotateCcw className="w-3.5 h-3.5 stroke-[2.5]" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -722,24 +723,26 @@ export const AgentChatPanel: React.FC<AgentChatPanelProps> = ({
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             rows={1}
+            aria-label="Event message or refinement instruction"
             placeholder={
               activePlan || currentStructuredPlan
                 ? "Refine this plan (e.g. 'Allocate prizes for top 3 winners', 'Cut budget by 15%', 'Add live acoustic music')..."
                 : "Describe your event (e.g. 'Hackathon for 100 students with ₹2L budget', 'Birthday in Goa')..."
             }
-            className="w-full min-w-0 bg-[#F8F5EE] border-2 border-black rounded-xl px-3.5 py-2 text-xs sm:text-sm text-black placeholder:text-slate-500 font-bold focus:outline-none focus:bg-white shadow-[1.5px_1.5px_0px_0px_#000] resize-none max-h-32 min-h-[40px] leading-relaxed transition-all"
+            className="w-full min-w-0 bg-[#F8F5EE] border-2 border-black rounded-xl px-3.5 py-2 text-xs sm:text-sm text-black placeholder:text-slate-500 font-bold focus:outline-none focus:bg-white focus-visible:ring-2 focus-visible:ring-black shadow-[1.5px_1.5px_0px_0px_#000] resize-none max-h-32 min-h-[40px] leading-relaxed transition-all"
           />
 
           <button
             onClick={() => handleSendMessage()}
             disabled={!input.trim() || isLoading}
-            className={`shrink-0 w-10 h-10 rounded-xl font-black text-xs transition-all flex items-center justify-center border-2 border-black ${input.trim() && !isLoading
+            aria-label="Send prompt to AI Concierge"
+            className={`shrink-0 w-10 h-10 rounded-xl font-black text-xs transition-all flex items-center justify-center border-2 border-black focus-visible:ring-2 focus-visible:ring-black ${input.trim() && !isLoading
                 ? 'bg-[#FFE600] hover:bg-[#FACC15] text-black shadow-[2px_2px_0px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer'
                 : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
               }`}
             title="Send prompt to agent"
           >
-            <Send className="w-4 h-4 stroke-[3]" />
+            <Send className="w-4 h-4 stroke-[3]" aria-hidden="true" />
           </button>
         </div>
       </div>

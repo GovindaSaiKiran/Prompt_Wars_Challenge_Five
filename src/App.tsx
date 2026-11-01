@@ -664,8 +664,12 @@ export const App: React.FC = () => {
 
       {/* Floating Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#141517] border-2 border-black text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-[4px_4px_0px_0px_#FFE600] flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
-          <CheckCircle2 className="w-4 h-4 text-[#FFE600] shrink-0" />
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-6 right-6 z-50 bg-[#141517] border-2 border-black text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-[4px_4px_0px_0px_#FFE600] flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200"
+        >
+          <CheckCircle2 className="w-4 h-4 text-[#FFE600] shrink-0" aria-hidden="true" />
           <span>{toastMessage}</span>
         </div>
       )}

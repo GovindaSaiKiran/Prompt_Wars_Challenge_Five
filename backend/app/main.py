@@ -66,12 +66,12 @@ def create_application() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # Configure CORS Middleware
+    # Configure CORS Middleware (Strictly bounded to Vercel deployments, local origins, and configured origins)
     app.add_middleware(
         CORSMiddleware,
-        allow_origin_regex=r"^https?://.*",
+        allow_origin_regex=r"^(https://([a-zA-Z0-9-]+\.)*vercel\.app|http://(localhost|127\.0\.0\.1)(:\d+)?)$",
         allow_origins=settings.CORS_ORIGINS,
-        allow_credentials=True,
+        allow_credentials=False,
         allow_methods=["*"],
         allow_headers=["*"],
     )

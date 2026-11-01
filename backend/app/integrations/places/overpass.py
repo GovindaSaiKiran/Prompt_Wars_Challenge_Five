@@ -366,8 +366,8 @@ out center tags 50;"""
                 logger.warning(f"Overpass endpoint {endpoint} failed: {endpoint_err}")
                 self.last_error = str(endpoint_err)
 
-        if raw_json is None or not raw_json.get("elements"):
-            # Provide high-confidence benchmark venues around coordinates if remote Overpass is unavailable
+        if raw_json is None:
+            # Remote Overpass servers were unavailable or timed out; provide high-confidence benchmark venues
             fallback_places = self._build_benchmark_places(latitude, longitude, bounded_radius, category)
             res = PlacesResponse(
                 center_latitude=latitude,
@@ -381,8 +381,22 @@ out center tags 50;"""
             self.cache.set(cache_key, res)
             return res
 
+        elements = raw_json.get("elements", [])
+        if not elements:
+            # Overpass was contacted successfully and returned 0 matching elements in this search bounding circle
+            res = PlacesResponse(
+                center_latitude=latitude,
+                center_longitude=longitude,
+                radius_meters=bounded_radius,
+                category=category,
+                total_found=0,
+                places=[],
+                attribution="OpenStreetMap Overpass",
+            )
+            self.cache.set(cache_key, res)
+            return res
+
         try:
-            elements = raw_json.get("elements", [])
             places: List[NormalizedPlace] = []
             seen_identifiers: Set[str] = set()
 

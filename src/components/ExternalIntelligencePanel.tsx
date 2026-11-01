@@ -175,10 +175,11 @@ export const ExternalIntelligencePanel: React.FC<ExternalIntelligencePanelProps>
             <button
               onClick={loadStatus}
               disabled={loadingStatus}
-              className="p-2 border-2 border-black bg-white rounded-xl shadow-[2px_2px_0px_0px_#000] hover:bg-slate-50 active:translate-x-0.5 active:translate-y-0.5 transition-all text-xs font-black flex items-center gap-1"
+              aria-label="Refresh external provider status"
+              className="p-2 border-2 border-black bg-white rounded-xl shadow-[2px_2px_0px_0px_#000] hover:bg-slate-50 active:translate-x-0.5 active:translate-y-0.5 transition-all text-xs font-black flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-black"
               title="Refresh provider status"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${loadingStatus ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${loadingStatus ? 'animate-spin' : ''}`} aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -188,23 +189,25 @@ export const ExternalIntelligencePanel: React.FC<ExternalIntelligencePanelProps>
           <form onSubmit={handleGeocodeSearch} className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                <MapPin className="w-4 h-4 text-black" />
+                <MapPin className="w-4 h-4 text-black" aria-hidden="true" />
               </div>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                aria-label="Search city, neighborhood, or landmark in India"
                 placeholder="Search city, neighborhood, or landmark in India (e.g. Banjara Hills, Hyderabad)"
-                className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border-2 border-black rounded-xl text-xs font-bold text-black focus:outline-none focus:bg-white"
+                className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border-2 border-black rounded-xl text-xs font-bold text-black focus:outline-none focus:bg-white focus-visible:ring-2 focus-visible:ring-black"
               />
             </div>
 
             <button
               type="submit"
               disabled={isSearchingGeocode}
-              className="px-5 py-2.5 bg-[#FFE600] hover:bg-[#FACC15] text-black font-black text-xs border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] flex items-center justify-center gap-1.5 transition-all active:translate-x-0.5 active:translate-y-0.5"
+              aria-label="Search location on OpenStreetMap"
+              className="px-5 py-2.5 bg-[#FFE600] hover:bg-[#FACC15] text-black font-black text-xs border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] flex items-center justify-center gap-1.5 transition-all active:translate-x-0.5 active:translate-y-0.5 focus-visible:ring-2 focus-visible:ring-black"
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-4 h-4" aria-hidden="true" />
               <span>{isSearchingGeocode ? 'Searching...' : 'Locate on OSM'}</span>
             </button>
           </form>
@@ -287,13 +290,16 @@ export const ExternalIntelligencePanel: React.FC<ExternalIntelligencePanelProps>
           </div>
 
           {/* Radius Selector */}
-          <div className="flex items-center gap-1.5 text-xs font-bold">
+          <div role="group" aria-label="Search Radius" className="flex items-center gap-1.5 text-xs font-bold">
             <span className="text-slate-500">Radius:</span>
             {[1000, 3000, 5000, 10000].map((r) => (
               <button
                 key={r}
+                type="button"
                 onClick={() => setSelectedRadius(r)}
-                className={`px-2.5 py-1 rounded-lg border text-xs font-black transition-all ${
+                aria-pressed={selectedRadius === r}
+                aria-label={`Search within ${r >= 1000 ? `${r / 1000} kilometers` : `${r} meters`}`}
+                className={`px-2.5 py-1 rounded-lg border text-xs font-black transition-all focus-visible:ring-2 focus-visible:ring-black ${
                   selectedRadius === r
                     ? 'bg-black text-white border-black'
                     : 'bg-white text-slate-700 border-slate-300 hover:border-black'
@@ -306,7 +312,7 @@ export const ExternalIntelligencePanel: React.FC<ExternalIntelligencePanelProps>
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs font-bold">
+        <div role="tablist" aria-label="Venue Categories" className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs font-bold">
           {[
             { id: 'all', label: 'All Places' },
             { id: 'banquet_hall', label: 'Banquet Halls' },
@@ -318,8 +324,11 @@ export const ExternalIntelligencePanel: React.FC<ExternalIntelligencePanelProps>
           ].map((cat) => (
             <button
               key={cat.id}
+              role="tab"
+              type="button"
+              aria-selected={selectedCategory === cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3 py-1.5 rounded-xl border text-xs font-bold whitespace-nowrap transition-all ${
+              className={`px-3 py-1.5 rounded-xl border text-xs font-bold whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-black ${
                 selectedCategory === cat.id
                   ? 'bg-[#FFE600] text-black border-2 border-black shadow-[1px_1px_0px_0px_#000]'
                   : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-400'

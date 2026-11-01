@@ -263,20 +263,22 @@ export const Header: React.FC<HeaderProps> = ({
           {brief && (
             <button
               onClick={onExport}
-              className="hidden md:flex p-1.5 text-black bg-white hover:bg-slate-100 border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] transition-all"
+              aria-label="Export Ledger to PDF"
+              className="hidden md:flex p-1.5 text-black bg-white hover:bg-slate-100 border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] transition-all focus-visible:ring-2 focus-visible:ring-black"
               title="Export Ledger PDF"
             >
-              <Printer className="w-4 h-4 stroke-[2.5]" />
+              <Printer className="w-4 h-4 stroke-[2.5]" aria-hidden="true" />
             </button>
           )}
 
           {/* Reset Workspace */}
           <button
             onClick={onReset}
-            className="p-1.5 text-black bg-white hover:bg-red-50 border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] transition-all"
+            aria-label="Reset workspace and clear budget ledger"
+            className="p-1.5 text-black bg-white hover:bg-red-50 border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_#000] transition-all focus-visible:ring-2 focus-visible:ring-black"
             title="Clear workspace"
           >
-            <RotateCcw className="w-4 h-4 stroke-[2.5]" />
+            <RotateCcw className="w-4 h-4 stroke-[2.5]" aria-hidden="true" />
           </button>
         </div>
       </div>
