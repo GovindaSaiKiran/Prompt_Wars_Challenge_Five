@@ -218,10 +218,11 @@ export const RecordInjectorModal: React.FC<RecordInjectorModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Vendor Name */}
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-black text-black uppercase tracking-wider mb-1">
+                  <label htmlFor="modal-vendor-name" className="block text-xs font-black text-black uppercase tracking-wider mb-1">
                     Vendor / Company Name
                   </label>
                   <input
+                    id="modal-vendor-name"
                     type="text"
                     value={formData.vendorName}
                     onChange={(e) =>
@@ -241,10 +242,11 @@ export const RecordInjectorModal: React.FC<RecordInjectorModalProps> = ({
 
                 {/* Service Category */}
                 <div>
-                  <label className="block text-xs font-black text-black uppercase tracking-wider mb-1">
+                  <label htmlFor="modal-service-category" className="block text-xs font-black text-black uppercase tracking-wider mb-1">
                     Service Category
                   </label>
                   <select
+                    id="modal-service-category"
                     value={formData.category}
                     onChange={(e) =>
                       setFormData({
@@ -266,10 +268,11 @@ export const RecordInjectorModal: React.FC<RecordInjectorModalProps> = ({
 
                 {/* Pricing Type */}
                 <div>
-                  <label className="block text-xs font-black text-black uppercase tracking-wider mb-1">
+                  <label htmlFor="modal-pricing-unit" className="block text-xs font-black text-black uppercase tracking-wider mb-1">
                     Billing Structure
                   </label>
                   <select
+                    id="modal-pricing-unit"
                     value={formData.unit}
                     onChange={(e) =>
                       setFormData({
@@ -288,10 +291,11 @@ export const RecordInjectorModal: React.FC<RecordInjectorModalProps> = ({
 
                 {/* Rate / Price */}
                 <div>
-                  <label className="block text-xs font-black text-black uppercase tracking-wider mb-1">
+                  <label htmlFor="modal-base-price" className="block text-xs font-black text-black uppercase tracking-wider mb-1">
                     Rate / Base Price (₹)
                   </label>
                   <input
+                    id="modal-base-price"
                     type="number"
                     min="0"
                     value={formData.basePrice || ''}
@@ -315,10 +319,11 @@ export const RecordInjectorModal: React.FC<RecordInjectorModalProps> = ({
 
                 {/* GST Rate */}
                 <div>
-                  <label className="block text-xs font-black text-black uppercase tracking-wider mb-1">
+                  <label htmlFor="modal-gst-pct" className="block text-xs font-black text-black uppercase tracking-wider mb-1">
                     GST Tax Slab
                   </label>
                   <select
+                    id="modal-gst-pct"
                     value={formData.gstPct}
                     onChange={(e) =>
                       setFormData({
@@ -337,10 +342,11 @@ export const RecordInjectorModal: React.FC<RecordInjectorModalProps> = ({
 
                 {/* Additional Charges */}
                 <div>
-                  <label className="block text-xs font-black text-black uppercase tracking-wider mb-1">
+                  <label htmlFor="modal-additional-charges" className="block text-xs font-black text-black uppercase tracking-wider mb-1">
                     Extra Setup / Security (₹)
                   </label>
                   <input
+                    id="modal-additional-charges"
                     type="number"
                     min="0"
                     value={formData.additionalCharges || ''}
@@ -357,10 +363,11 @@ export const RecordInjectorModal: React.FC<RecordInjectorModalProps> = ({
 
                 {/* Quote Status */}
                 <div>
-                  <label className="block text-xs font-black text-black uppercase tracking-wider mb-1">
+                  <label htmlFor="modal-status" className="block text-xs font-black text-black uppercase tracking-wider mb-1">
                     Verification Status
                   </label>
                   <select
+                    id="modal-status"
                     value={formData.status}
                     onChange={(e) =>
                       setFormData({
@@ -379,10 +386,11 @@ export const RecordInjectorModal: React.FC<RecordInjectorModalProps> = ({
 
                 {/* Inclusions */}
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-black text-black uppercase tracking-wider mb-1">
+                  <label htmlFor="modal-inclusions" className="block text-xs font-black text-black uppercase tracking-wider mb-1">
                     Inclusions (Comma Separated)
                   </label>
                   <input
+                    id="modal-inclusions"
                     type="text"
                     value={inclusionsText}
                     onChange={(e) => setInclusionsText(e.target.value)}
@@ -393,10 +401,11 @@ export const RecordInjectorModal: React.FC<RecordInjectorModalProps> = ({
 
                 {/* Notes or link */}
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-black text-black uppercase tracking-wider mb-1">
+                  <label htmlFor="modal-notes" className="block text-xs font-black text-black uppercase tracking-wider mb-1">
                     Notes or Contact Details (Optional)
                   </label>
                   <input
+                    id="modal-notes"
                     type="text"
                     value={notesText}
                     onChange={(e) => setNotesText(e.target.value)}

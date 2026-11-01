@@ -234,28 +234,30 @@ export const VendorLedgerTable: React.FC<VendorLedgerTableProps> = ({
           <table className="w-full text-left text-xs border-collapse min-w-[620px]">
             <thead>
               <tr className="border-b-2 border-black bg-[#F8F5EE] text-black text-[10px] font-black uppercase tracking-wider select-none">
-                <th className="py-2.5 px-3 w-12 text-center">Budget</th>
-                <th className="py-2.5 px-3">
+                <th scope="col" className="py-2.5 px-3 w-12 text-center">Budget</th>
+                <th scope="col" className="py-2.5 px-3">
                   <button
                     onClick={() => toggleSort('name')}
+                    aria-label="Sort by vendor name"
                     className="flex items-center gap-1 hover:text-black font-black"
                   >
                     <span>Vendor & Details</span>
-                    <ArrowUpDown className="w-3 h-3 stroke-[2.5]" />
+                    <ArrowUpDown className="w-3 h-3 stroke-[2.5]" aria-hidden="true" />
                   </button>
                 </th>
-                <th className="py-2.5 px-3 w-32">Rate / Unit</th>
-                <th className="py-2.5 px-3 text-right w-32">
+                <th scope="col" className="py-2.5 px-3 w-32">Rate / Unit</th>
+                <th scope="col" className="py-2.5 px-3 text-right w-32">
                   <button
                     onClick={() => toggleSort('total')}
+                    aria-label="Sort by total cost"
                     className="flex items-center gap-1 ml-auto hover:text-black font-black"
                   >
                     <span>Total Cost</span>
-                    <ArrowUpDown className="w-3 h-3 stroke-[2.5]" />
+                    <ArrowUpDown className="w-3 h-3 stroke-[2.5]" aria-hidden="true" />
                   </button>
                 </th>
-                <th className="py-2.5 px-3 w-28">Status</th>
-                <th className="py-2.5 px-3 text-right w-28">Actions</th>
+                <th scope="col" className="py-2.5 px-3 w-28">Status</th>
+                <th scope="col" className="py-2.5 px-3 text-right w-28">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y-2 divide-black/10">
@@ -274,15 +276,18 @@ export const VendorLedgerTable: React.FC<VendorLedgerTableProps> = ({
                     {/* Include in Budget Checkbox */}
                     <td className="py-3 px-3 text-center align-middle">
                       <button
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        aria-label={`${isSelected ? 'Deselect' : 'Select'} ${vendor.vendorName} for budget calculation`}
                         onClick={() => onToggleSelect(vendor.id)}
-                        className={`w-5 h-5 rounded-md flex items-center justify-center transition-all mx-auto ${
+                        className={`w-5 h-5 rounded-md flex items-center justify-center transition-all mx-auto focus-visible:ring-2 focus-visible:ring-black ${
                           isSelected
                             ? 'bg-[#4ADE80] text-black border-2 border-black shadow-[1px_1px_0px_0px_#000]'
                             : 'border-2 border-black bg-white hover:bg-slate-100'
                         }`}
                         title={isSelected ? 'Included in budget. Click to exclude.' : 'Excluded. Click to include.'}
                       >
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
+                        <Check className="w-3.5 h-3.5 stroke-[3]" aria-hidden="true" />
                       </button>
                     </td>
 
@@ -299,10 +304,11 @@ export const VendorLedgerTable: React.FC<VendorLedgerTableProps> = ({
                         {vendor.phone && (
                           <a
                             href={`tel:${vendor.phone}`}
+                            aria-label={`Call ${vendor.vendorName} at ${vendor.phone}`}
                             className="text-[10px] text-black bg-[#86EFAC] hover:bg-[#4ADE80] border border-black shadow-[1px_1px_0px_0px_#000] px-1.5 py-0.2 rounded flex items-center gap-1 font-black transition-colors"
                             title={`Call ${vendor.vendorName}`}
                           >
-                            <Phone className="w-2.5 h-2.5 stroke-[3]" />
+                            <Phone className="w-2.5 h-2.5 stroke-[3]" aria-hidden="true" />
                             <span>{vendor.phone}</span>
                           </a>
                         )}
@@ -312,10 +318,11 @@ export const VendorLedgerTable: React.FC<VendorLedgerTableProps> = ({
                             href={vendor.mapUrl}
                             target="_blank"
                             rel="noopener noreferrer"
+                            aria-label={`Open directions to ${vendor.vendorName} in Google Maps`}
                             className="text-[10px] text-black bg-[#7DD3FC] hover:bg-[#38BDF8] border border-black shadow-[1px_1px_0px_0px_#000] px-1.5 py-0.2 rounded flex items-center gap-1 font-black transition-colors"
                             title="Open directions in Google Maps"
                           >
-                            <MapPin className="w-2.5 h-2.5 stroke-[3]" />
+                            <MapPin className="w-2.5 h-2.5 stroke-[3]" aria-hidden="true" />
                             <span>Maps</span>
                           </a>
                         )}
@@ -361,7 +368,8 @@ export const VendorLedgerTable: React.FC<VendorLedgerTableProps> = ({
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => onOpenAudit(vendor)}
-                          className="px-2 py-0.5 text-[11px] text-black bg-white hover:bg-[#FFE600] border border-black shadow-[1px_1px_0px_0px_#000] rounded transition-all font-black"
+                          aria-label={`View quote details for ${vendor.vendorName}`}
+                          className="px-2 py-0.5 text-[11px] text-black bg-white hover:bg-[#FFE600] border border-black shadow-[1px_1px_0px_0px_#000] rounded transition-all font-black focus-visible:ring-2 focus-visible:ring-black"
                           title="View quote details"
                         >
                           Details
@@ -369,18 +377,20 @@ export const VendorLedgerTable: React.FC<VendorLedgerTableProps> = ({
 
                         <button
                           onClick={() => onDraftAction(vendor)}
-                          className="p-1 text-black bg-white hover:bg-[#BAE6FD] border border-black shadow-[1px_1px_0px_0px_#000] rounded transition-all"
+                          aria-label={`Message vendor ${vendor.vendorName}`}
+                          className="p-1 text-black bg-white hover:bg-[#BAE6FD] border border-black shadow-[1px_1px_0px_0px_#000] rounded transition-all focus-visible:ring-2 focus-visible:ring-black"
                           title="Message vendor"
                         >
-                          <Mail className="w-3 h-3 stroke-[2.5]" />
+                          <Mail className="w-3 h-3 stroke-[2.5]" aria-hidden="true" />
                         </button>
 
                         <button
                           onClick={() => onDeleteVendor(vendor.id)}
-                          className="p-1 text-black hover:text-red-600 bg-white hover:bg-red-50 border border-black shadow-[1px_1px_0px_0px_#000] rounded transition-all"
+                          aria-label={`Delete quote for ${vendor.vendorName}`}
+                          className="p-1 text-black hover:text-red-600 bg-white hover:bg-red-50 border border-black shadow-[1px_1px_0px_0px_#000] rounded transition-all focus-visible:ring-2 focus-visible:ring-black"
                           title="Delete quote"
                         >
-                          <Trash2 className="w-3 h-3 stroke-[2.5]" />
+                          <Trash2 className="w-3 h-3 stroke-[2.5]" aria-hidden="true" />
                         </button>
                       </div>
                     </td>

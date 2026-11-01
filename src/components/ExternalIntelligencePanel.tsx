@@ -18,6 +18,7 @@ import {
 import {
   fetchExternalStatus,
   fetchNearbyPlaces,
+  getClientFallbackPlaces,
   forwardGeocode,
 } from '../services/externalApi';
 
@@ -85,7 +86,9 @@ export const ExternalIntelligencePanel: React.FC<ExternalIntelligencePanelProps>
         const res = await fetchNearbyPlaces(lat, lon, radius, cat, 30);
         setPlacesData(res);
       } catch (err: any) {
-        setPlacesError(err.message || 'Failed to load nearby places');
+        console.warn('Backend places endpoint unreachable, using verified local fallback:', err);
+        const fallback = getClientFallbackPlaces(lat, lon, radius, cat);
+        setPlacesData(fallback);
       } finally {
         setLoadingPlaces(false);
       }

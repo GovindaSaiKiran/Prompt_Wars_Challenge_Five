@@ -364,66 +364,95 @@ export const App: React.FC = () => {
                 <div className="space-y-5">
                   {/* Sub-tab Navigation */}
                   <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black pb-3">
-                    <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border-2 border-black shadow-[2.5px_2.5px_0px_0px_#000]">
+                    <div
+                      role="tablist"
+                      aria-label="Plan View Sections"
+                      className="flex items-center gap-1.5 bg-white p-1 rounded-xl border-2 border-black shadow-[2.5px_2.5px_0px_0px_#000]"
+                    >
                       {structuredPlan && (
                         <button
+                          role="tab"
+                          type="button"
+                          id="tab-structured"
+                          aria-selected={activePlanTab === 'structured'}
+                          aria-controls="panel-structured"
                           onClick={() => setActivePlanTab('structured')}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all ${
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all focus-visible:ring-2 focus-visible:ring-black ${
                             activePlanTab === 'structured'
                               ? 'bg-[#FFE600] text-black border-2 border-black shadow-[1.5px_1.5px_0px_0px_#000]'
                               : 'text-slate-700 hover:text-black border-2 border-transparent'
                           }`}
                         >
-                          <FileText className="w-3.5 h-3.5 stroke-[2.5]" />
+                          <FileText className="w-3.5 h-3.5 stroke-[2.5]" aria-hidden="true" />
                           <span>Structured Plan</span>
                         </button>
                       )}
 
                       <button
+                        role="tab"
+                        type="button"
+                        id="tab-quotes"
+                        aria-selected={activePlanTab === 'quotes'}
+                        aria-controls="panel-quotes"
                         onClick={() => setActivePlanTab('quotes')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all ${
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all focus-visible:ring-2 focus-visible:ring-black ${
                           activePlanTab === 'quotes'
                             ? 'bg-[#BAE6FD] text-black border-2 border-black shadow-[1.5px_1.5px_0px_0px_#000]'
                             : 'text-slate-700 hover:text-black border-2 border-transparent'
                         }`}
                       >
-                        <Layers className="w-3.5 h-3.5 stroke-[2.5]" />
+                        <Layers className="w-3.5 h-3.5 stroke-[2.5]" aria-hidden="true" />
                         <span>Quotes Ledger ({vendors.length})</span>
                       </button>
 
                       <button
+                        role="tab"
+                        type="button"
+                        id="tab-vendors"
+                        aria-selected={activePlanTab === 'vendors'}
+                        aria-controls="panel-vendors"
                         onClick={() => setActivePlanTab('vendors')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all ${
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all focus-visible:ring-2 focus-visible:ring-black ${
                           activePlanTab === 'vendors'
                             ? 'bg-[#FFE600] text-black border-2 border-black shadow-[1.5px_1.5px_0px_0px_#000]'
                             : 'text-slate-700 hover:text-black border-2 border-transparent'
                         }`}
                       >
-                        <Building2 className="w-3.5 h-3.5 stroke-[2.5]" />
+                        <Building2 className="w-3.5 h-3.5 stroke-[2.5]" aria-hidden="true" />
                         <span>Vendor Intelligence</span>
                       </button>
 
                       <button
+                        role="tab"
+                        type="button"
+                        id="tab-breakdown"
+                        aria-selected={activePlanTab === 'breakdown'}
+                        aria-controls="panel-breakdown"
                         onClick={() => setActivePlanTab('breakdown')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all ${
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all focus-visible:ring-2 focus-visible:ring-black ${
                           activePlanTab === 'breakdown'
                             ? 'bg-[#FEF08A] text-black border-2 border-black shadow-[1.5px_1.5px_0px_0px_#000]'
                             : 'text-slate-700 hover:text-black border-2 border-transparent'
                         }`}
                       >
-                        <PieChart className="w-3.5 h-3.5 stroke-[2.5]" />
+                        <PieChart className="w-3.5 h-3.5 stroke-[2.5]" aria-hidden="true" />
                         <span>Breakdown</span>
                       </button>
 
                       <button
+                        role="tab"
+                        type="button"
+                        id="tab-checklist"
+                        aria-selected={activePlanTab === 'checklist'}
+                        aria-controls="panel-checklist"
                         onClick={() => setActivePlanTab('checklist')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all ${
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black transition-all focus-visible:ring-2 focus-visible:ring-black ${
                           activePlanTab === 'checklist'
                             ? 'bg-[#D8B4FE] text-black border-2 border-black shadow-[1.5px_1.5px_0px_0px_#000]'
                             : 'text-slate-700 hover:text-black border-2 border-transparent'
                         }`}
                       >
-                        <ListTodo className="w-3.5 h-3.5 stroke-[2.5]" />
+                        <ListTodo className="w-3.5 h-3.5 stroke-[2.5]" aria-hidden="true" />
                         <span>Tasks ({tasks.length})</span>
                       </button>
                     </div>

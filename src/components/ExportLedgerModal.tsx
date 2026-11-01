@@ -152,48 +152,58 @@ export const ExportLedgerModal: React.FC<ExportLedgerModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="text-black bg-white hover:bg-slate-100 border-2 border-black p-1.5 rounded-lg shadow-[2px_2px_0px_0px_#000] transition-transform hover:scale-105"
+            aria-label="Close export dialog"
+            className="text-black bg-white hover:bg-slate-100 border-2 border-black p-1.5 rounded-lg shadow-[2px_2px_0px_0px_#000] transition-transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-black"
           >
-            <X className="w-5 h-5 stroke-[2.5]" />
+            <X className="w-5 h-5 stroke-[2.5]" aria-hidden="true" />
           </button>
         </div>
 
         {/* Format Selector */}
-        <div className="flex items-center justify-between px-5 py-3 bg-[#F8F5EE] border-b-2 border-black">
+        <div role="tablist" aria-label="Export Format Options" className="flex items-center justify-between px-5 py-3 bg-[#F8F5EE] border-b-2 border-black">
           <div className="flex items-center gap-2">
             <button
+              role="tab"
+              type="button"
+              aria-selected={exportFormat === 'pdf'}
               onClick={() => setExportFormat('pdf')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all focus-visible:ring-2 focus-visible:ring-black ${
                 exportFormat === 'pdf'
                   ? 'bg-[#4ADE80] text-black border-2 border-black shadow-[2px_2px_0px_0px_#000]'
                   : 'bg-white hover:bg-slate-100 text-black border-2 border-black'
               }`}
             >
-              <Printer className="w-3.5 h-3.5 stroke-[2.5]" />
+              <Printer className="w-3.5 h-3.5 stroke-[2.5]" aria-hidden="true" />
               <span>Full Plan (PDF)</span>
             </button>
 
             <button
+              role="tab"
+              type="button"
+              aria-selected={exportFormat === 'csv'}
               onClick={() => setExportFormat('csv')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all focus-visible:ring-2 focus-visible:ring-black ${
                 exportFormat === 'csv'
                   ? 'bg-[#FFE600] text-black border-2 border-black shadow-[2px_2px_0px_0px_#000]'
                   : 'bg-white hover:bg-slate-100 text-black border-2 border-black'
               }`}
             >
-              <FileSpreadsheet className="w-3.5 h-3.5 stroke-[2.5]" />
+              <FileSpreadsheet className="w-3.5 h-3.5 stroke-[2.5]" aria-hidden="true" />
               <span>Spreadsheet (CSV)</span>
             </button>
 
             <button
+              role="tab"
+              type="button"
+              aria-selected={exportFormat === 'json'}
               onClick={() => setExportFormat('json')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all focus-visible:ring-2 focus-visible:ring-black ${
                 exportFormat === 'json'
                   ? 'bg-[#BAE6FD] text-black border-2 border-black shadow-[2px_2px_0px_0px_#000]'
                   : 'bg-white hover:bg-slate-100 text-black border-2 border-black'
               }`}
             >
-              <FileJson className="w-3.5 h-3.5 stroke-[2.5]" />
+              <FileJson className="w-3.5 h-3.5 stroke-[2.5]" aria-hidden="true" />
               <span>Data (JSON)</span>
             </button>
           </div>
